@@ -146,5 +146,11 @@ describe('detective-typescript', () => {
     const deps = detective('const foo = require("foobar")', { mixedImports: true });
     assert(deps.length === 1);
     assert(deps[0] === 'foobar');
-  })
+  });
+
+  it('does not count TypeScript dynamic imports if the skipDynamicImports option is enabled', () => {
+    const deps = detective('const foo = import("foo");', { skipDynamicImports: true });
+    assert(deps.length === 0);
+  });
+
 });

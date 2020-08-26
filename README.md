@@ -19,6 +19,7 @@ var dependencies = detective(mySourceCode);
 ### Options
 
 - `skipTypeImports` (default: false) - Skips imports that only imports types
+- `skipDynamicImports` (default: false) - Skips dynamic imports
 - `mixedImports`: (default: false) - Include CJS imports in dependency list
 
 #### License

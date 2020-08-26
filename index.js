@@ -21,6 +21,10 @@ module.exports = function(src, options = {}) {
   // Remove skipTypeImports option, as this option may not be recognized by the walker/parser
   delete walkerOptions.skipTypeImports;
 
+  // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-4.html#dynamic-import-expressions
+  const skipDynamicImports = Boolean(options.skipDynamicImports);
+  delete walkerOptions.skipDynamicImports;
+
   const mixedImports = Boolean(options.mixedImports);
   delete walkerOptions.mixedImports;
 
@@ -39,7 +43,7 @@ module.exports = function(src, options = {}) {
   walker.walk(src, function(node) {
     switch (node.type) {
       case 'Import':
-        if (node.parent && node.parent.type === 'CallExpression' && node.parent.arguments.length) {
+        if (!skipDynamicImports && node.parent && node.parent.type === 'CallExpression' && node.parent.arguments.length) {
           dependencies.push(node.parent.arguments[0].value);
         }
         break;
